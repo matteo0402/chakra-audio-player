@@ -15,7 +15,7 @@ interface QueueItemProps {
 }
 
 function QueueItem({audio}: QueueItemProps) {
-  const {isPlaying, togglePlay, setSrc, src, isReady} = useAudioPlayer()
+  const {isPlaying, togglePlay, setSrc, src} = useAudioPlayer()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   return (

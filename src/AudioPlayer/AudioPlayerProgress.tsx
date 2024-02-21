@@ -4,8 +4,7 @@ import {
   SliderThumb,
   SliderTrack
 } from '@chakra-ui/react';
-import {useAudioPlayer} from './AudioPlayerContext';
-import { useEffect } from 'react'
+import { useAudioPlayer } from './AudioPlayerContext';
 
 function AudioPlayerProgress() {
 

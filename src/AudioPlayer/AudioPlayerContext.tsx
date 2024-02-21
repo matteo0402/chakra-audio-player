@@ -1,13 +1,13 @@
 import {
   createContext,
   forwardRef,
-  ReactNode, useCallback,
+  ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState
 } from 'react'
-import { Audio } from '../types/audio'
 
 interface AudioPlayerContextProps {
   src: string | undefined,
@@ -59,7 +59,7 @@ interface AudioPlayerProviderProps {
 }
 
 export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProviderProps>(
-  ({ children, src }, ref) => {
+  ({ children, src }) => {
     const [currentSrc, setCurrentSrc] = useState<string | undefined>(src);
 
     const [loop, setLoop] = useState(false)
