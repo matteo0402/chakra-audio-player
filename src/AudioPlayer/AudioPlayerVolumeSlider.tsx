@@ -22,7 +22,6 @@ function AudioPlayerVolumeSlider() {
         color={useColorModeValue('#fcfcfc', '#000000')}
         label={'Volume'}
       >
-
         <SliderThumb boxSize={6}>
           <Box color="blue.500" fontSize={12}>
             {Math.round(volume * 100)}

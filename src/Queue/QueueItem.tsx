@@ -38,7 +38,7 @@ function QueueItem({audio}: QueueItemProps) {
               if (src !== audio.src) {
                 setIsLoading(true)
                 // fake async function - e.g. get audio from api
-                await new Promise(resolve => setTimeout(resolve, 3000));
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 setIsLoading(false)
                 setSrc(audio.src)
               }

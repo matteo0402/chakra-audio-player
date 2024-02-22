@@ -8,6 +8,7 @@ import {
   useRef,
   useState
 } from 'react'
+import { LocalStorage, useLocalStorage } from '../hooks/useLocalStorage'
 
 interface AudioPlayerContextProps {
   src: string | undefined,
@@ -59,17 +60,23 @@ interface AudioPlayerProviderProps {
 }
 
 export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProviderProps>(
-  ({ children, src }) => {
+  ({ children, src }, _ref) => {
     const [currentSrc, setCurrentSrc] = useState<string | undefined>(src);
+    const [isDefaultSource, setIsDefaultSource] = useState(false);
 
+    const [volumeState, setVolumeState] = useLocalStorage(LocalStorage.AUDIO_PLAYER_VOLUME, 0.5)
     const [loop, setLoop] = useState(false)
     const [isReady, setIsReady] = useState(false)
     const [isError, setIsError] = useState(false)
-    const [volumeState, setVolumeState] = useState(0.5);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
     const audioRef = useRef<HTMLAudioElement>(null);
+
+    const handleSetSrc = (src: string | undefined) => {
+      setIsDefaultSource(false);
+      setCurrentSrc(src);
+    };
 
     const togglePlay = useCallback(async () => {
       const audio = audioRef.current;
@@ -97,8 +104,13 @@ export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProvi
     }, [isReady]);
 
     useEffect(() => {
-      togglePlay()
-    }, [currentSrc, setCurrentSrc]);
+      // don't play audio if it's default source
+      if (isReady && !isDefaultSource) {
+        togglePlay().then(() => (
+          console.info('playing audio')
+        ));
+      }
+    }, [isReady, isDefaultSource, currentSrc, setCurrentSrc]);
 
 
     const setVolume = (vol: number) => {
@@ -130,7 +142,7 @@ export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProvi
       <AudioPlayerContext.Provider
         value={{
           src: currentSrc,
-          setSrc: setCurrentSrc,
+          setSrc: handleSetSrc,
           isPlaying: isPlaying,
           isReady,
           isError,
@@ -150,6 +162,11 @@ export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProvi
           preload={'metadata'}
           onCanPlay={(e) => {
             e.currentTarget.volume = volumeState;
+            if (!src) {
+              setIsDefaultSource(false);
+            } else {
+              setIsDefaultSource(true);
+            }
             setIsReady(true);
           }}
           onDurationChange={(e) => setDuration(e.currentTarget.duration)}
