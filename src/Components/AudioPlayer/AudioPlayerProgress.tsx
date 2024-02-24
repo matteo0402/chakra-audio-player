@@ -20,6 +20,7 @@ function AudioPlayerProgress() {
       min={0}
       step={0.01}
       w={'500%'}
+      focusThumbOnChange={false}
     >
       <SliderTrack>
         <SliderFilledTrack/>

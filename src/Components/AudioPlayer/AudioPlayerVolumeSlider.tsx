@@ -14,7 +14,16 @@ function AudioPlayerVolumeSlider() {
   const {volume, setVolume} = useAudioPlayer()
 
   return (
-    <Slider aria-label='volume-slider' defaultValue={volume} value={volume} onChange={setVolume} max={1} min={0} step={0.01}>
+    <Slider
+      aria-label='volume-slider'
+      defaultValue={volume}
+      value={volume}
+      onChange={setVolume}
+      max={1}
+      min={0}
+      step={0.01}
+      focusThumbOnChange={false}
+    >
       <SliderTrack>
         <SliderFilledTrack />
       </SliderTrack>

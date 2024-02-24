@@ -1,6 +1,6 @@
-import {useAudioPlayer} from './AudioPlayerContext';
-import {IconButton, Tooltip, useColorModeValue} from '@chakra-ui/react';
-import {TfiLoop} from 'react-icons/tfi';
+import { useAudioPlayer } from './AudioPlayerContext';
+import { IconButton, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { TfiLoop } from 'react-icons/tfi';
 
 function AudioPlayerLoopButton() {
 

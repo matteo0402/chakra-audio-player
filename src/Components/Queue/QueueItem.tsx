@@ -5,7 +5,7 @@ import {
   Tr,
   useColorModeValue
 } from '@chakra-ui/react'
-import { Audio } from '../types/audio'
+import { Audio } from '../../types/audio'
 import { useAudioPlayer } from '../AudioPlayer/AudioPlayerContext'
 import { IoPauseOutline, IoPlayOutline } from 'react-icons/io5'
 import { useState } from 'react'

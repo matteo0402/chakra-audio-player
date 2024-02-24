@@ -8,7 +8,8 @@ import {
   useRef,
   useState
 } from 'react'
-import { LocalStorage, useLocalStorage } from '../hooks/useLocalStorage'
+import { LocalStorage, useLocalStorage } from '../../hooks/useLocalStorage'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 interface AudioPlayerContextProps {
   src: string | undefined,
@@ -64,8 +65,10 @@ export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProvi
     const [currentSrc, setCurrentSrc] = useState<string | undefined>(src);
     const [isDefaultSource, setIsDefaultSource] = useState(false);
 
-    const [volumeState, setVolumeState] = useLocalStorage(LocalStorage.AUDIO_PLAYER_VOLUME, 0.5)
-    const [loop, setLoop] = useState(false)
+    const [volumeState, setVolumeState] = useLocalStorage<number>(LocalStorage.AUDIO_PLAYER_VOLUME, 0.5)
+    const [previousVolume, setPreviousVolume] = useState<number>(volumeState)
+
+    const [loop, setLoop] = useLocalStorage(LocalStorage.AUDIO_PLAYER_LOOP,false)
     const [isReady, setIsReady] = useState(false)
     const [isError, setIsError] = useState(false)
     const [duration, setDuration] = useState(0);
@@ -112,10 +115,9 @@ export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProvi
       }
     }, [isReady, isDefaultSource, currentSrc, setCurrentSrc]);
 
-
     const setVolume = (vol: number) => {
       if (vol >= 0 && vol <= 1) {
-        setVolumeState(vol); 
+        setVolumeState(vol);
         const audio = audioRef.current;
         if (audio) {
           audio.volume = vol;
@@ -137,6 +139,46 @@ export const AudioPlayerProvider = forwardRef<HTMLAudioElement, AudioPlayerProvi
       setLoop(!loop);
     };
 
+    useHotkeys('space', () => togglePlay())
+
+    useHotkeys('l', () => toggleLoop())
+
+    useHotkeys('m', () => {
+      setPreviousVolume(volumeState)
+      setVolume(volumeState === 0 ? previousVolume : 0)
+    })
+
+    useHotkeys('up', () => {
+      if (volumeState > 1-0.05) {
+        setVolume(1)
+      } else {
+        setVolume(volumeState+0.05)
+      }
+    })
+
+    useHotkeys('down', () => {
+      if (volumeState < 0.05) {
+        setVolume(0)
+      } else {
+        setVolume(volumeState-0.05)
+      }
+    })
+
+    useHotkeys('right', () => {
+      if (currentTime > duration-10) {
+        setAudioCurrentTime(duration)
+      } else {
+        setAudioCurrentTime(currentTime+10)
+      }
+    })
+
+    useHotkeys('left', () => {
+      if (currentTime < 10) {
+        setAudioCurrentTime(0)
+      } else {
+        setAudioCurrentTime(currentTime-10)
+      }
+    })
 
     return (
       <AudioPlayerContext.Provider

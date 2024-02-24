@@ -1,8 +1,10 @@
 import React from 'react';
 import { AbsoluteCenter, Flex } from '@chakra-ui/react'
-import AudioPlayer from './AudioPlayer/AudioPlayer'
-import Queue from './Queue/Queue'
-import { AudioPlayerProvider } from './AudioPlayer/AudioPlayerContext'
+import AudioPlayer from './Components/AudioPlayer/AudioPlayer'
+import Queue from './Components/Queue/Queue'
+import {
+  AudioPlayerProvider
+} from './Components/AudioPlayer/AudioPlayerContext'
 
 function App() {
 

@@ -1,5 +1,5 @@
-import {useAudioPlayer} from './AudioPlayerContext';
-import {Text} from '@chakra-ui/react';
+import { useAudioPlayer } from './AudioPlayerContext';
+import { Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 function AudioPlayerDuration() {
